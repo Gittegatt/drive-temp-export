@@ -2,6 +2,11 @@
 
 This Python script reads disk temperatures using `smartctl` and exports them as millidegree Celsius values to individual files. It handles disks in spindown mode and writes fallback values when temperature is not available.
 
+## Background
+
+This project is developed to work alongside the [coolercontrol](https://gitlab.com/coolercontrol/coolercontrol) Docker container running on TrueNAS Scale.  
+It is designed to read disk temperatures and export them as files, which are then used to control devices such as the NZXT RGB & Fan Controller - AC-CRFR0-B1-6 for automated fan speed adjustments based on disk temps.
+
 ## Features
 
 - Detects all `/dev/sd?` devices
@@ -27,7 +32,7 @@ SENSOR_OUTPUT_DIR = Path('/path/to/sensor/output/path/directory')
 
 Make sure the directory exists and the script has write permissions.
 
-## Usage
+## Usage of the script
 
 Run the script with Python:
 
@@ -35,10 +40,18 @@ Run the script with Python:
 python drive-temp-export.py
 ```
 
+## Usage in docker and CoolerControl WebUI
+- mount the /path/to/sensor/output/path/directory and bind it as volume into you docker container
+    e.g. /mnt/tank_1/docker/data/coolercontrol/sensors:/sensors:ro
+- create a new custom sensor and use file like /sensors/sda for sda temperature
+
+## Usage in Truenas Scale as Cron Job
+- navigate to Advanced Settings  > Cron Jobs and create a new one with custom schedule * * * * *  (Every minute)
+
 ## Contact
 
 Feedback or suggestions?  
-Visit: [https://github.com/Gittegatt/EtherShell](https://github.com/Gittegatt/EtherShell)
+Visit: [https://github.com/Gittegatt/drive-temp-export](https://github.com/Gittegatt/drive-temp-export)
 
 ---
 

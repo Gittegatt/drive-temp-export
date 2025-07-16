@@ -3,7 +3,7 @@ from pathlib import Path
 import glob
 import re
 
-SENSOR_OUTPUT_DIR = Path('/mnt/tank_1/docker/data/coolercontrol/sensors')
+SENSOR_OUTPUT_DIR = Path('/path/to/sensor/output/path/directory')
 
 def get_devices():
     return [Path(p).name for p in glob.glob('/dev/sd?')]
