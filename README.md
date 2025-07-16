@@ -1,5 +1,6 @@
+![Ko-Fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)
+
 # drive-temp-export
-![Ko-Fi](https://ko-fi.com/gittegatt)
 
 This Python script reads disk temperatures using `smartctl` and exports them as millidegree Celsius values to individual files on Linux based systems. It handles disks in spindown mode, let them sleep and writes fallback values when temperature is not available.
 
