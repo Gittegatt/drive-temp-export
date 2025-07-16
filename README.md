@@ -1,6 +1,6 @@
 # drive-temp-export
 
-This Python script reads disk temperatures using `smartctl` and exports them as millidegree Celsius values to individual files. It handles disks in spindown mode and writes fallback values when temperature is not available.
+This Python script reads disk temperatures using `smartctl` and exports them as millidegree Celsius values to individual files on Linux based systems. It handles disks in spindown mode, let them sleep and writes fallback values when temperature is not available.
 
 ## Background
 
