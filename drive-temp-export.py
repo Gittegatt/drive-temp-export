@@ -12,9 +12,8 @@ def is_spindown(dev):
     try:
         result = subprocess.run(['smartctl', '-i', f'/dev/{dev}'], capture_output=True, text=True, check=True)
         for line in result.stdout.splitlines():
-            if 'Power mode' in line:
-                if 'standby' in line.lower():
-                    return True
+            if 'Power mode' in line and 'standby' in line.lower():
+                return True
         return False
     except subprocess.CalledProcessError:
         print(f"Error checking spindown status for {dev}")
@@ -22,13 +21,13 @@ def is_spindown(dev):
 
 def read_temperature(dev):
     try:
-        result = subprocess.run(['smartctl', '-A', f'/dev/{dev}'], capture_output=True, text=True, check=True)
+        result = subprocess.run(['smartctl', '-n', 'standby', '-A', f'/dev/{dev}'],
+                                capture_output=True, text=True, check=True)
         temps = []
         print(f"Reading temperatures for {dev}:")
         for line in result.stdout.splitlines():
             if 'Temperature_Celsius' in line or 'Airflow_Temperature_Cel' in line:
                 print(f"  Found line: {line}")
-                # Suche die letzte Zahl vor Klammer oder Zeilenende
                 match = re.search(r'(\d+)(?=\s*(?:\(|$))', line)
                 if match:
                     temp_val = int(match.group(1))
@@ -41,10 +40,9 @@ def read_temperature(dev):
         else:
             print(f"  No temperature found for {dev}")
             return None
-    except subprocess.CalledProcessError:
-        print(f"Error reading temperature for {dev}")
+    except subprocess.CalledProcessError as e:
+        print(f"{dev}: SMART read failed or disk in standby (smartctl exit code: {e.returncode})")
         return None
-
 
 def write_temperature(dev, temp_celsius):
     path = SENSOR_OUTPUT_DIR / dev
