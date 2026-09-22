@@ -470,12 +470,6 @@ The projects solve different parts of the same problem:
 
 Neither project can prevent another process from waking a disk that it accesses.
 
-## Contact
-
-Feedback or suggestions?
-
-Visit: [https://github.com/Gittegatt/drive-temp-export](https://github.com/Gittegatt/drive-temp-export)
-
 ## Disclaimer
 
 **Use at your own risk. No warranty provided.**
@@ -505,3 +499,9 @@ If you enjoy the project and would like to support its development, a small cont
 [Support me on Ko-fi](https://ko-fi.com/gittegatt)
 
 [Support me on buymeacoffee](https://buymeacoffee.com/gittegatt)
+
+## Contact
+
+Feedback or suggestions?
+
+Visit: [https://github.com/Gittegatt/drive-temp-export](https://github.com/Gittegatt/drive-temp-export)
