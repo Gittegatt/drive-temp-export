@@ -6,6 +6,8 @@ It discovers physical drives dynamically, reads temperatures with `smartctl`, an
 
 The current version is designed as a long-running process. It continuously refreshes the device inventory and temperature files at a configurable interval.
 
+Current script version: `v1.2.0`
+
 ## Background
 
 The project was developed for TrueNAS SCALE systems running [CoolerControl](https://gitlab.com/coolercontrol/coolercontrol) in Docker.
@@ -497,9 +499,3 @@ If you enjoy the project and would like to support its development, a small cont
 [Support me on Ko-fi](https://ko-fi.com/gittegatt)
 
 [Support me on buymeacoffee](https://buymeacoffee.com/gittegatt)
-
-## Contact
-
-Feedback or suggestions?
-
-Visit: [https://github.com/Gittegatt/drive-temp-export](https://github.com/Gittegatt/drive-temp-export)
