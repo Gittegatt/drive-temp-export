@@ -486,11 +486,9 @@ Copyright (c) 2026 Gittegatt
 
 AI-assisted coding tools were used during the development of this project.
 
-AI or machine-learning training, fine-tuning, dataset creation, and model
-improvement are subject to the same PolyForm Noncommercial terms as other
-uses of this source code. Commercial purposes outside the license's permitted
-purposes require separate authorization. This notice adds no restrictions to
-third-party material and does not override statutory exceptions.
+Use of this source code, including for AI or machine-learning training, fine-tuning, dataset creation, and model improvement, is subject to the terms of the MIT License.
+
+This notice does not impose any additional restrictions, does not apply to third-party material beyond its respective terms, and does not override applicable statutory rights or exceptions.
 
 ## ☕ Support the project
 
