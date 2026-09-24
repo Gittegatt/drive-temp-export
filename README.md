@@ -259,11 +259,20 @@ Error getting drive power state: Not a Block Device File
 - Those 10 native reads all returned a stable `27000`, corresponding to 27 C.
 - In an earlier test, loading/probing the `drivetemp` module with `modprobe drivetemp` caused some already sleeping HDDs to spin up. This is different from reading an already initialized hwmon sensor.
 
-These findings show that native hwmon polling can be standby-safe on at least some drive/controller combinations, but they are not a guarantee for every drive model or system.
+These findings show that reading an already initialized native hwmon sensor can be standby-safe on at least some drive/controller combinations, but they are not a guarantee for every drive model or system. In particular, this must be distinguished from loading/probing the `drivetemp` module itself.
 
-If native CoolerControl sensors are proven safe on your hardware, this exporter is not strictly required just to obtain temperatures. It can still be useful for predictable SMART standby handling, stable sensor filenames, group `average`/`max` sensors, a status file, and decoupling CoolerControl from direct drive monitoring.
+A later approximately 24-hour test on the same TrueNAS SCALE 25.10.7 system was performed with `drivetemp` unloaded. During that observation period, `lsmod | grep drivetemp` remained empty and no new matching kernel-log entries for `LOG SENSE`, `attempting task abort`, or `task abort` were observed. Apart from known application accesses, no unexplained automatic HDD spin-ups were observed. This is not a fully instrumented proof of every drive power-state transition, but together with the earlier probe-related wake-ups it is a strong indication that the `drivetemp`/hwmon path contributed to the unwanted SAS accesses on this particular system.
 
-Avoid repeatedly unloading and reloading `drivetemp` merely to test temperatures if your goal is to keep sleeping drives asleep.
+For that reason, the current setup keeps `drivetemp` disabled and uses the file sensors from this exporter instead. Native HDD hwmon sensors are disabled in CoolerControl. A local module blacklist can, for example, contain:
+
+```text
+blacklist drivetemp
+install drivetemp /bin/false
+```
+
+This does **not** disable TrueNAS SMART/`smartd`; it only disables the Linux `drivetemp` kernel/hwmon path. On TrueNAS SCALE, locally created files under `/etc/modprobe.d/` should be re-checked after system upgrades rather than assumed to persist indefinitely.
+
+The exporter remains useful for predictable standby-aware SMART handling, stable sensor filenames, group `average`/`max` sensors, a status file, and decoupling CoolerControl from native drive monitoring.
 
 ## Requirements
 
@@ -434,6 +443,8 @@ smartctl -n standby,3 -A /dev/sdX
 Do not replace this with a normal unconditional SMART read if preserving standby is important.
 
 Also check other services that can access the disks. A drive can be woken by filesystem access, media-library scans, SMART tasks, scrubs, replication, applications, or other monitoring software even when this exporter itself is standby-safe.
+
+During testing of the surrounding TrueNAS setup, two concrete application-level wake sources were identified independently of `drive-temp-export`: a Jellyfin scheduled media-library scan and an Immich periodic scan of an external library. The Immich library was bind-mounted from an HDD-backed pool and its daily midnight scan caused normal filesystem access to that pool. Moving disk-heavy application scans into a shared weekly maintenance window reduced unnecessary wake-ups. These examples are workload-specific; they are included to illustrate why an HDD wake does not by itself mean that the temperature exporter caused it.
 
 ### Native CoolerControl drive sensors show power-state warnings
 
